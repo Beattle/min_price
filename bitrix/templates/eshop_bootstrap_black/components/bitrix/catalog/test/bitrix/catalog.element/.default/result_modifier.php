@@ -642,16 +642,12 @@ if ($ar_res = $db_res->Fetch())
         "PRICE" => $price,
         "CURRENCY" => "RUB"
     );
-    /*$price = CurrencyFormat($price, "RUB");
+    $price = CurrencyFormat($price, "RUB");
     $arResult['RATIO_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
     $arResult['MIN_BASIS_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
-    $arResult['MIN_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;*/
+    $arResult['MIN_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
 }
 
-// print_r($arResult['RATIO_PRICE']);
 
-// echo '<pre>'.print_r($arResult,true).'</pre>';
-
-// echo '<pre>'.print_r($arResult['MIN_PRICE']['PRINT_DISCOUNT_VALUE'],true).'</pre>';
 
 ?>

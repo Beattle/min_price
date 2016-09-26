@@ -12,42 +12,13 @@ use Bitrix\Main;
 use Bitrix\Main\Application;
 
 
-/*function changePrice(\Bitrix\Main\Event $event)
-{
-    $name = $event->getParameter('NAME');
-    $value = $event->getParameter('VALUE');
 
-    if ($name === 'PRICE')
-    {
-        $value = 420;
-        // $GLOBALS['APPLICATION']->RestartBuffer();
-
-        $event->addResult(
-            new Main\EventResult(
-                Main\EventResult::SUCCESS, array('VALUE' => $value)
-            )
-        );
-    }
-}*/
 
 Main\EventManager::getInstance()->addEventHandler(
     'sale',
     'OnSaleBasketBeforeSaved',
     'changePrice'
 );
-
-function tryHard($intProductID=318,
-        $quantity = 1,
-        $arUserGroups = array(),
-        $renewal = "N",
-        $arPrices = array(),
-        $siteID = false,
-        $arDiscountCoupons = false){
-
-    echo '<pre>'.print_r($arPrices,true).'</pre>';
-    die();
-
-}
 
 
 function changePrice(Main\Event $event)
@@ -75,7 +46,6 @@ function changePrice(Main\Event $event)
 
 
                 $item->setFields(array(
-                    'QUANTITY' => 1,
                     'PRODUCT_PROVIDER_CLASS' => '',
                     // 'PRICE'=>420,
                     'BASE_PRICE' => $price,
@@ -86,19 +56,13 @@ function changePrice(Main\Event $event)
 
 
                 $item->save();
-                echo '<pre>'.print_r($item->getFields(),true).'</pre>';
+
 
             }
         }
     }
 
 
-
-
-
-
-
-    // die();
 
       return new Main\EventResult(Main\EventResult::SUCCESS);
 
