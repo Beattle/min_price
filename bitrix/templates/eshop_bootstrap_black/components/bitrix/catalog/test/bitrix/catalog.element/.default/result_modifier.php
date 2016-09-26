@@ -618,6 +618,7 @@ if ($arResult['MODULES']['currency'])
 $arR_res = CPrice::GetBasePrice($arResult['ID']);
 $arPrice = CCatalogProduct::GetOptimalPrice($arResult['ID'], 1, $USER->GetUserGroupArray(), false);
 
+
 $cur_Price_with_disc = $arPrice['RESULT_PRICE']['DISCOUNT_PRICE'];
 
 $db_res = CPrice::GetList(
@@ -629,14 +630,22 @@ $db_res = CPrice::GetList(
 );
 
 
+
 if ($ar_res = $db_res->Fetch())
+
 {
     $min_price =  (int)$ar_res["PRICE"];
     $price =  $cur_Price_with_disc < $min_price?$min_price:$cur_Price_with_disc;
-    $price = CurrencyFormat($price, "RUB");
+    $arFields = Array(
+        "PRODUCT_ID" => $arResult['ID'] ,
+        "CATALOG_GROUP_ID" => 2,
+        "PRICE" => $price,
+        "CURRENCY" => "RUB"
+    );
+    /*$price = CurrencyFormat($price, "RUB");
     $arResult['RATIO_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
     $arResult['MIN_BASIS_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
-    $arResult['MIN_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
+    $arResult['MIN_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;*/
 }
 
 // print_r($arResult['RATIO_PRICE']);
@@ -644,4 +653,5 @@ if ($ar_res = $db_res->Fetch())
 // echo '<pre>'.print_r($arResult,true).'</pre>';
 
 // echo '<pre>'.print_r($arResult['MIN_PRICE']['PRINT_DISCOUNT_VALUE'],true).'</pre>';
+
 ?>
