@@ -449,7 +449,42 @@ if (!empty($arResult['ITEMS']))
 			}
 		}
 		$arItem['LAST_ELEMENT'] = 'N';
+
+        $arR_res = CPrice::GetBasePrice($arItem['ID']);
+        $arPrice = CCatalogProduct::GetOptimalPrice($arItem['ID'], 1, $USER->GetUserGroupArray(), false);
+
+
+        $cur_Price_with_disc = $arPrice['RESULT_PRICE']['DISCOUNT_PRICE'];
+
+        $db_res = CPrice::GetList(
+            array(),
+            array(
+                "PRODUCT_ID" => $arItem['ID'],
+                "CATALOG_GROUP_ID" => 3
+            )
+        );
+
+
+
+        if ($ar_res = $db_res->Fetch())
+
+        {
+            $min_price =  (int)$ar_res["PRICE"];
+            $price =  $cur_Price_with_disc < $min_price?$min_price:$cur_Price_with_disc;
+            $arFields = Array(
+                "PRODUCT_ID" => $arItem['ID'] ,
+                "CATALOG_GROUP_ID" => 2,
+                "PRICE" => $price,
+                "CURRENCY" => "RUB"
+            );
+            $price = CurrencyFormat($price, "RUB");
+            $arItem['RATIO_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
+            $arItem['MIN_BASIS_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
+            $arItem['MIN_PRICE']['PRINT_DISCOUNT_VALUE'] = $price;
+        }
+
 		$arNewItemsList[$key] = $arItem;
+
 	}
 	$arNewItemsList[$key]['LAST_ELEMENT'] = 'Y';
 	$arResult['ITEMS'] = $arNewItemsList;
